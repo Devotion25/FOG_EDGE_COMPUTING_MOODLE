@@ -1,0 +1,69 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+#  SYSTEMD SERVICE: Moodle Sync Receiver Daemon
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+#  Location: /etc/systemd/system/moodle-receiver.service
+#  VM: All VMs (VM1, VM2, VM3)
+#
+#  NOTE: Before installing, edit moodle-sync-receiver.php and set VM_NAME!
+#
+#  Installation:
+#    sudo cp moodle-receiver.service /etc/systemd/system/
+#    sudo systemctl daemon-reload
+#    sudo systemctl enable moodle-receiver
+#    sudo systemctl start moodle-receiver
+#
+#  Management:
+#    sudo systemctl status moodle-receiver
+#    sudo systemctl stop moodle-receiver
+#    sudo systemctl restart moodle-receiver
+#    sudo journalctl -u moodle-receiver -f
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[Unit]
+Description=Moodle Database Sync Receiver Daemon
+Documentation=https://github.com/your-repo/moodle-sync
+After=network.target mysql.service
+Requires=mysql.service
+
+[Service]
+# Service type
+Type=simple
+
+# User and group
+User=devo2024
+Group=devo2024
+
+# Working directory
+WorkingDirectory=/home/devo2024/moodle-sync
+
+# Command to run
+ExecStart=/usr/bin/php moodle-sync-receiver.php
+
+# Restart policy
+Restart=always
+RestartSec=10
+StartLimitInterval=60
+StartLimitBurst=3
+
+# Logging
+StandardOutput=append:/var/log/moodle-receiver.log
+StandardError=append:/var/log/moodle-receiver.log
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/log
+PrivateTmp=true
+
+# Resource limits
+MemoryMax=256M
+CPUQuota=25%
+
+[Install]
+WantedBy=multi-user.target
+
+
+

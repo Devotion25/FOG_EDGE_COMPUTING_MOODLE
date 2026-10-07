@@ -1,0 +1,71 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+#  SYSTEMD SERVICE: Yjs WebSocket Server
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+#  Location: /etc/systemd/system/yjs-server.service
+#  VM: VM1 only (172.20.10.4)
+#
+#  Installation:
+#    sudo cp yjs-server.service /etc/systemd/system/
+#    sudo systemctl daemon-reload
+#    sudo systemctl enable yjs-server
+#    sudo systemctl start yjs-server
+#
+#  Management:
+#    sudo systemctl status yjs-server
+#    sudo systemctl stop yjs-server
+#    sudo systemctl restart yjs-server
+#    sudo journalctl -u yjs-server -f
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[Unit]
+Description=Yjs Moodle Sync WebSocket Server
+Documentation=https://github.com/your-repo/moodle-sync
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+# Service type
+Type=simple
+
+# User and group
+User=devo2024
+Group=devo2024
+
+# Working directory
+WorkingDirectory=/home/devo2024/yjs-moodle-sync
+
+# Environment
+Environment=NODE_ENV=production
+Environment=PORT=2345
+
+# Command to run
+ExecStart=/usr/bin/node yjs-server.js
+
+# Restart policy
+Restart=always
+RestartSec=10
+StartLimitInterval=60
+StartLimitBurst=3
+
+# Logging
+StandardOutput=append:/var/log/yjs-server.log
+StandardError=append:/var/log/yjs-server.log
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/log
+PrivateTmp=true
+
+# Resource limits
+MemoryMax=512M
+CPUQuota=50%
+
+[Install]
+WantedBy=multi-user.target
+
+
+

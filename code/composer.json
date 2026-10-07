@@ -1,0 +1,32 @@
+{
+    "name": "moodle-sync/php-daemons",
+    "description": "PHP daemons for distributed Moodle database synchronization",
+    "type": "project",
+    "version": "2.0.0",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Distributed Moodle Sync Project",
+            "email": "project@example.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "textalk/websocket": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "MoodleSync\\": "src/"
+        }
+    },
+    "scripts": {
+        "sender": "php moodle-sync-sender.php",
+        "receiver": "php moodle-sync-receiver.php"
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
+
+
+

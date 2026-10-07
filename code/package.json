@@ -1,0 +1,37 @@
+{
+  "name": "yjs-moodle-sync",
+  "version": "2.0.0",
+  "description": "Yjs WebSocket server for distributed Moodle database synchronization",
+  "main": "yjs-server.js",
+  "scripts": {
+    "start": "node yjs-server.js",
+    "dev": "node --watch yjs-server.js",
+    "test": "node test-connection.js"
+  },
+  "keywords": [
+    "yjs",
+    "crdt",
+    "moodle",
+    "websocket",
+    "distributed-systems",
+    "synchronization",
+    "eventual-consistency"
+  ],
+  "author": "Distributed Moodle Sync Project",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.14.2",
+    "yjs": "^13.6.10"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/yjs-moodle-sync.git"
+  }
+}
+
+
+

@@ -1,0 +1,69 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+#  SYSTEMD SERVICE: Moodle Sync Sender Daemon
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+#  Location: /etc/systemd/system/moodle-sender.service
+#  VM: All VMs (VM1, VM2, VM3)
+#
+#  NOTE: Before installing, edit moodle-sync-sender.php and set VM_NAME!
+#
+#  Installation:
+#    sudo cp moodle-sender.service /etc/systemd/system/
+#    sudo systemctl daemon-reload
+#    sudo systemctl enable moodle-sender
+#    sudo systemctl start moodle-sender
+#
+#  Management:
+#    sudo systemctl status moodle-sender
+#    sudo systemctl stop moodle-sender
+#    sudo systemctl restart moodle-sender
+#    sudo journalctl -u moodle-sender -f
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[Unit]
+Description=Moodle Database Sync Sender Daemon
+Documentation=https://github.com/your-repo/moodle-sync
+After=network.target mysql.service
+Requires=mysql.service
+
+[Service]
+# Service type
+Type=simple
+
+# User and group
+User=devo2024
+Group=devo2024
+
+# Working directory
+WorkingDirectory=/home/devo2024/moodle-sync
+
+# Command to run
+ExecStart=/usr/bin/php moodle-sync-sender.php
+
+# Restart policy
+Restart=always
+RestartSec=10
+StartLimitInterval=60
+StartLimitBurst=3
+
+# Logging
+StandardOutput=append:/var/log/moodle-sender.log
+StandardError=append:/var/log/moodle-sender.log
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/log
+PrivateTmp=true
+
+# Resource limits
+MemoryMax=256M
+CPUQuota=25%
+
+[Install]
+WantedBy=multi-user.target
+
+
+
